@@ -46,7 +46,11 @@ document.getElementById('settings-form').addEventListener('submit', (event) => {
 });
 
 function updateCrossOriginWarning(baseUrl) {
-  crossOriginWarning.hidden = !isCrossOrigin(baseUrl);
+  const crossOrigin = isCrossOrigin(baseUrl);
+  crossOriginWarning.hidden = !crossOrigin;
+  if (crossOrigin) {
+    document.getElementById('cross-origin-value').textContent = window.location.origin;
+  }
 }
 
 // --- Auth ---------------------------------------------------------
