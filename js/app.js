@@ -1,6 +1,6 @@
 import { ApiClient, ApiError } from './api.js';
 import { getApiBaseUrl, setApiBaseUrl, isCrossOrigin } from './config.js';
-import { openSignIn, signOut } from './auth.js';
+import { redirectToSignIn, isSignInRedirect, clearSignInRedirectParams, signOut } from './auth.js';
 import { renderPosts, fillPostForm, readPostForm } from './posts.js';
 import { renderStories, fillStoryForm, readStoryForm } from './stories.js';
 import { handleMediaUpload, copyToClipboard } from './media.js';
