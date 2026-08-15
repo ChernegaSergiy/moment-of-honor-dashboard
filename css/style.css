@@ -1,0 +1,44 @@
+.moh-meta {
+  color: var(--pico-muted-color);
+  font-size: 0.875rem;
+}
+
+.moh-warning {
+  border: 1px solid var(--pico-form-element-invalid-border-color, #c00);
+  border-radius: var(--pico-border-radius);
+  padding: 0.75rem 1rem;
+}
+
+.moh-error {
+  color: var(--pico-form-element-invalid-border-color, #c00);
+}
+
+.moh-badge {
+  color: var(--pico-form-element-invalid-border-color, #c00);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+}
+
+.moh-banner {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  max-width: 24rem;
+  background: var(--pico-card-background-color);
+  border: 1px solid var(--pico-card-border-color, currentColor);
+  border-radius: var(--pico-border-radius);
+  padding: 0.75rem 1rem;
+  box-shadow: var(--pico-card-box-shadow, 0 2px 8px rgba(0, 0, 0, 0.2));
+}
+
+.moh-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.moh-tab-active {
+  font-weight: bold;
+  text-decoration: underline;
+}
