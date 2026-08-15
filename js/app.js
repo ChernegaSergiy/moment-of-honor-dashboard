@@ -51,11 +51,7 @@ function updateCrossOriginWarning(baseUrl) {
 
 // --- Auth ---------------------------------------------------------
 
-document.getElementById('sign-in-btn').addEventListener('click', () => openSignIn(api.baseUrl));
-
-document.getElementById('continue-btn').addEventListener('click', async () => {
-  await checkAuthAndRender();
-});
+document.getElementById('sign-in-btn').addEventListener('click', () => redirectToSignIn(api.baseUrl));
 
 signOutBtn.addEventListener('click', async () => {
   try {
