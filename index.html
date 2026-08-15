@@ -33,10 +33,11 @@
         <button type="submit">Save</button>
       </form>
       <p id="cross-origin-warning" class="moh-warning" hidden>
-        This API URL is on a different origin than the dashboard. The Worker's session
-        cookie will not be sent with dashboard requests unless the dashboard and the
-        Worker are served from the same site (see the README's "Same-origin setup"
-        section). Sign-in will appear to succeed but API calls will return 401.
+        This API URL is on a different origin than the dashboard. Cross-origin sign-in
+        works, but the Worker must have this dashboard's origin
+        (<code id="cross-origin-value"></code>) listed in its <code>ALLOWED_ORIGINS</code>
+        configuration, or API calls will be rejected. See the CMS README's
+        "Cross-origin clients (CORS)" section.
       </p>
     </section>
 
