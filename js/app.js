@@ -231,6 +231,11 @@ async function bootstrap() {
   updateCrossOriginWarning(baseUrl);
   api = new ApiClient(baseUrl);
 
+  if (isSignInRedirect()) {
+    clearSignInRedirectParams();
+    showBanner('Signed in');
+  }
+
   await checkAuthAndRender();
 }
 
