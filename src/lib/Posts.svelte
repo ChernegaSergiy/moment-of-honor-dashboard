@@ -74,44 +74,74 @@
   }
 </script>
 
-<div class="moh-panel-header">
-  <h2>Posts</h2>
-  <button on:click={() => openDialog()}>New post</button>
+<div class="page-header">
+  <div>
+    <h1>Posts</h1>
+    <p style="color: var(--pico-muted-color); margin: 0;">Manage your articles and announcements.</p>
+  </div>
+  <button style="border-radius: 99px; padding: 0.5rem 1.5rem;" on:click={() => openDialog()}>+ New Post</button>
 </div>
 
-<div class="moh-list">
-  {#if posts.length === 0}
-    <p>No posts yet.</p>
-  {/if}
-  {#each posts as post}
-    <article class="moh-list-item">
-      <div>
-        <strong>{post.title}</strong>
-        <div class="moh-meta">{new Date(post.publishedAt).toLocaleString()} • {post.author}</div>
-      </div>
-      <div>
-        <button class="secondary outline" style="padding:0.25rem 0.5rem;font-size:0.8rem;" on:click={() => openDialog(post)}>Edit</button>
-        <button class="secondary outline" style="padding:0.25rem 0.5rem;font-size:0.8rem;color:var(--pico-del-color);border-color:var(--pico-del-color);" on:click={() => deletePost(post)}>Delete</button>
-      </div>
-    </article>
-  {/each}
-</div>
+{#if posts.length === 0}
+  <article style="text-align: center; padding: 3rem; background-color: transparent; border: 2px dashed var(--pico-muted-border-color); box-shadow: none;">
+    <p style="color: var(--pico-muted-color); margin: 0;">No posts yet. Create your first one!</p>
+  </article>
+{:else}
+  <div class="card-grid">
+    {#each posts as post}
+      <article class="card">
+        <header>{post.title}</header>
+        <div class="content">
+          <span class="badge">Author: {post.author}</span>
+          <div class="moh-meta">
+            Published: {new Date(post.publishedAt).toLocaleString()}
+          </div>
+        </div>
+        <footer>
+          <button class="secondary outline" style="border-radius: 99px; margin: 0; padding: 0.35rem 1rem; font-size: 0.85rem;" on:click={() => openDialog(post)}>Edit</button>
+          <button class="secondary outline" style="border-radius: 99px; margin: 0; padding: 0.35rem 1rem; font-size: 0.85rem; color: var(--pico-del-color); border-color: var(--pico-del-color);" on:click={() => deletePost(post)}>Delete</button>
+        </footer>
+      </article>
+    {/each}
+  </div>
+{/if}
 
 {#if showDialog}
   <dialog open>
-    <article>
+    <article style="max-width: 600px; width: 100%;">
       <header>
-        <h3>{editingPost ? 'Edit post' : 'New post'}</h3>
+        <h3 style="margin: 0;">{editingPost ? 'Edit Post' : 'Create New Post'}</h3>
       </header>
-      <form on:submit|preventDefault={savePost}>
-        <label>Title <input type="text" bind:value={formTitle} required maxlength="200" /></label>
-        <label>Content <textarea bind:value={formContent} rows="6" required></textarea></label>
-        <label>Media paths (comma-separated) <input type="text" bind:value={formMedia} placeholder="media/posts/example.jpg" /></label>
-        <label>Author <input type="text" bind:value={formAuthor} required /></label>
-        <label>Published at <input type="datetime-local" bind:value={formPublishedAt} required /></label>
-        <footer>
-          <button type="button" class="secondary" on:click={() => showDialog = false}>Cancel</button>
-          <button type="submit">Save</button>
+      <form on:submit|preventDefault={savePost} style="margin: 1rem 0 0 0;">
+        <label>
+          Title
+          <input type="text" bind:value={formTitle} required maxlength="200" />
+        </label>
+        
+        <label>
+          Content
+          <textarea bind:value={formContent} rows="6" required></textarea>
+        </label>
+        
+        <label>
+          Media paths (comma-separated)
+          <input type="text" bind:value={formMedia} placeholder="media/posts/example.jpg" />
+        </label>
+        
+        <div class="grid">
+          <label>
+            Author
+            <input type="text" bind:value={formAuthor} required />
+          </label>
+          <label>
+            Published at
+            <input type="datetime-local" bind:value={formPublishedAt} required />
+          </label>
+        </div>
+        
+        <footer style="margin-top: 1rem; padding-bottom: 0;">
+          <button type="button" class="secondary" style="border-radius: 99px;" on:click={() => showDialog = false}>Cancel</button>
+          <button type="submit" style="border-radius: 99px;">Save Post</button>
         </footer>
       </form>
     </article>

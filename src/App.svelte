@@ -42,13 +42,13 @@
     
     if (isSignInRedirect()) {
       clearSignInRedirectParams();
-      displayBanner('Signed in');
+      displayBanner('Signed in successfully');
     }
     
     try {
       const authenticated = await api.checkSession();
       if (authenticated) {
-        authStatusText = 'Signed in';
+        authStatusText = 'Connected';
         view = 'app';
       } else {
         view = 'login';
@@ -75,71 +75,92 @@
   }
 </script>
 
-<header class="container">
-  <nav>
-    <ul>
-      <li><strong>Moment of Honor</strong> — Dashboard</li>
-    </ul>
-    <ul>
-      <li class="moh-meta">{authStatusText}</li>
-      <li><a href="#" on:click|preventDefault={() => { settingsUrl = getApiBaseUrl(); view = 'settings'; }}>Settings</a></li>
-      {#if authStatusText}
-        <li><button class="secondary outline" on:click={doSignOut}>Sign out</button></li>
-      {/if}
-    </ul>
-  </nav>
-</header>
-
-<main class="container">
-  {#if view === 'settings'}
-    <section>
-      <h2>Settings</h2>
-      <p>Enter the URL where the <code>moment-of-honor-cms</code> Worker is deployed.</p>
-      <form on:submit|preventDefault={saveSettings}>
+{#if view === 'settings'}
+  <div class="auth-layout">
+    <div class="auth-card">
+      <h2 style="margin-bottom: 0.5rem; color: var(--primary);">CMS Configuration</h2>
+      <p style="color: var(--pico-muted-color); margin-bottom: 2rem;">Link your dashboard to the API.</p>
+      
+      <form on:submit|preventDefault={saveSettings} style="text-align: left;">
         <label>
-          API base URL
-          <input type="url" bind:value={settingsUrl} placeholder="https://api.example.com" required />
+          API Base URL
+          <input type="url" bind:value={settingsUrl} placeholder="https://api.example.com" required style="margin-bottom: 1.5rem;" />
         </label>
-        <button type="submit">Save</button>
+        <button type="submit" style="width: 100%; border-radius: 99px;">Connect Dashboard</button>
       </form>
+      
       {#if crossOriginWarning}
-        <p class="moh-warning">
-          This API URL is on a different origin than the dashboard. Cross-origin sign-in works, but the Worker must have this dashboard's origin (<code>{crossOriginValue}</code>) listed in its <code>ALLOWED_ORIGINS</code> configuration.
-        </p>
+        <article style="background-color: var(--pico-form-element-background-color); margin-top: 2rem; padding: 1rem; text-align: left; border-left: 4px solid var(--pico-color);">
+          <small>
+            <strong>Note:</strong> Cross-origin setup detected. Ensure the Worker config allows <code>{crossOriginValue}</code> in <code>ALLOWED_ORIGINS</code>.
+          </small>
+        </article>
       {/if}
-    </section>
-  {/if}
+    </div>
+  </div>
+{/if}
 
-  {#if view === 'login'}
-    <section>
-      <h2>Sign in</h2>
-      <p>Sign in with GitHub to manage posts, stories, and media.</p>
-      <button on:click={() => redirectToSignIn(api.baseUrl)}>Sign in with GitHub</button>
-      <p class="moh-meta">You'll be sent to GitHub and back automatically.</p>
-    </section>
-  {/if}
+{#if view === 'login'}
+  <div class="auth-layout">
+    <div class="auth-card">
+      <h2 style="margin-bottom: 0.5rem; color: var(--primary);">Welcome Back</h2>
+      <p style="color: var(--pico-muted-color); margin-bottom: 2rem;">Sign in to manage your CMS content.</p>
+      
+      <button on:click={() => redirectToSignIn(api.baseUrl)} style="width: 100%; border-radius: 99px; background-color: #24292e; border-color: #24292e;">
+        Sign in with GitHub
+      </button>
+      
+      <p style="margin-top: 1.5rem; font-size: 0.85rem; color: var(--pico-muted-color);">
+        Secure authentication via GitHub OAuth.
+      </p>
+    </div>
+  </div>
+{/if}
 
-  {#if view === 'app'}
-    <section>
+{#if view === 'app'}
+  <div class="dashboard-layout">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+        Moment of Honor
+      </div>
+      
       <nav>
         <ul>
-          <li><a href="#" class:moh-tab-active={activeTab === 'posts'} class="moh-tab" on:click|preventDefault={() => activeTab = 'posts'}>Posts</a></li>
-          <li><a href="#" class:moh-tab-active={activeTab === 'stories'} class="moh-tab" on:click|preventDefault={() => activeTab = 'stories'}>Stories</a></li>
-          <li><a href="#" class:moh-tab-active={activeTab === 'media'} class="moh-tab" on:click|preventDefault={() => activeTab = 'media'}>Media</a></li>
+          <li><a href="#" class:active={activeTab === 'posts'} on:click|preventDefault={() => activeTab = 'posts'}>Posts</a></li>
+          <li><a href="#" class:active={activeTab === 'stories'} on:click|preventDefault={() => activeTab = 'stories'}>Stories</a></li>
+          <li><a href="#" class:active={activeTab === 'media'} on:click|preventDefault={() => activeTab = 'media'}>Media</a></li>
         </ul>
       </nav>
+      
+      <div class="sidebar-footer">
+        <nav>
+          <ul>
+            <li><a href="#" on:click|preventDefault={() => { settingsUrl = getApiBaseUrl(); view = 'settings'; }} style="color: var(--pico-muted-color);">Settings</a></li>
+          </ul>
+        </nav>
+      </div>
+    </aside>
+    
+    <div class="main-content">
+      <div class="topbar">
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <span class="badge active">{authStatusText}</span>
+          <button class="secondary outline" style="margin: 0; padding: 0.35rem 1rem; border-radius: 99px; font-size: 0.85rem;" on:click={doSignOut}>Sign out</button>
+        </div>
+      </div>
+      
+      <div class="content-area">
+        {#if activeTab === 'posts'}<Posts {api} {displayBanner} />{/if}
+        {#if activeTab === 'stories'}<Stories {api} {displayBanner} />{/if}
+        {#if activeTab === 'media'}<Media {api} {displayBanner} />{/if}
+      </div>
+    </div>
+  </div>
+{/if}
 
-      {#if activeTab === 'posts'}<Posts {api} {displayBanner} />{/if}
-      {#if activeTab === 'stories'}<Stories {api} {displayBanner} />{/if}
-      {#if activeTab === 'media'}<Media {api} {displayBanner} />{/if}
-    </section>
-  {/if}
-
-  {#if showBanner}
-    <div class="moh-banner" class:moh-error={statusIsError}>{statusMessage}</div>
-  {/if}
-</main>
-
-<footer class="container">
-  <p class="moh-meta">Talks to the <a href="https://github.com/ChernegaSergiy/moment-of-honor-cms" target="_blank" rel="noopener">moment-of-honor-cms</a> API.</p>
-</footer>
+{#if showBanner}
+  <div class="moh-banner" class:moh-error={statusIsError}>
+    <strong>{statusIsError ? 'Error' : 'Success'}:</strong> {statusMessage}
+  </div>
+{/if}

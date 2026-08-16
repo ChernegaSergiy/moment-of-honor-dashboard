@@ -72,43 +72,72 @@
   }
 </script>
 
-<div class="moh-panel-header">
-  <h2>Stories</h2>
-  <button on:click={() => openDialog()}>New story</button>
+<div class="page-header">
+  <div>
+    <h1>Stories</h1>
+    <p style="color: var(--pico-muted-color); margin: 0;">Manage ephemeral content.</p>
+  </div>
+  <button style="border-radius: 99px; padding: 0.5rem 1.5rem;" on:click={() => openDialog()}>+ New Story</button>
 </div>
 
-<div class="moh-list">
-  {#if stories.length === 0}
-    <p>No stories yet.</p>
-  {/if}
-  {#each stories as story}
-    <article class="moh-list-item">
-      <div>
-        <strong>Story {story.id}</strong>
-        <div class="moh-meta">{new Date(story.publishedAt).toLocaleString()} • Expires: {new Date(story.expiresAt).toLocaleString()}</div>
-      </div>
-      <div>
-        <button class="secondary outline" style="padding:0.25rem 0.5rem;font-size:0.8rem;" on:click={() => openDialog(story)}>Edit</button>
-        <button class="secondary outline" style="padding:0.25rem 0.5rem;font-size:0.8rem;color:var(--pico-del-color);border-color:var(--pico-del-color);" on:click={() => deleteStory(story)}>Delete</button>
-      </div>
-    </article>
-  {/each}
-</div>
+{#if stories.length === 0}
+  <article style="text-align: center; padding: 3rem; background-color: transparent; border: 2px dashed var(--pico-muted-border-color); box-shadow: none;">
+    <p style="color: var(--pico-muted-color); margin: 0;">No stories yet. Create your first one!</p>
+  </article>
+{:else}
+  <div class="card-grid">
+    {#each stories as story}
+      <article class="card">
+        <header>Story {story.id}</header>
+        <div class="content">
+          {#if story.author}<span class="badge">Author: {story.author}</span>{/if}
+          <div class="moh-meta">
+            <strong>Published:</strong> {new Date(story.publishedAt).toLocaleString()}
+          </div>
+          <div class="moh-meta">
+            <strong>Expires:</strong> {new Date(story.expiresAt).toLocaleString()}
+          </div>
+        </div>
+        <footer>
+          <button class="secondary outline" style="border-radius: 99px; margin: 0; padding: 0.35rem 1rem; font-size: 0.85rem;" on:click={() => openDialog(story)}>Edit</button>
+          <button class="secondary outline" style="border-radius: 99px; margin: 0; padding: 0.35rem 1rem; font-size: 0.85rem; color: var(--pico-del-color); border-color: var(--pico-del-color);" on:click={() => deleteStory(story)}>Delete</button>
+        </footer>
+      </article>
+    {/each}
+  </div>
+{/if}
 
 {#if showDialog}
   <dialog open>
-    <article>
+    <article style="max-width: 600px; width: 100%;">
       <header>
-        <h3>{editingStory ? 'Edit story' : 'New story'}</h3>
+        <h3 style="margin: 0;">{editingStory ? 'Edit Story' : 'Create New Story'}</h3>
       </header>
-      <form on:submit|preventDefault={saveStory}>
-        <label>Media paths (comma-separated) <input type="text" bind:value={formMedia} placeholder="media/stories/example.jpg" required /></label>
-        <label>Author (optional) <input type="text" bind:value={formAuthor} /></label>
-        <label>Published at <input type="datetime-local" bind:value={formPublishedAt} required /></label>
-        <label>Expires at <input type="datetime-local" bind:value={formExpiresAt} required /></label>
-        <footer>
-          <button type="button" class="secondary" on:click={() => showDialog = false}>Cancel</button>
-          <button type="submit">Save</button>
+      <form on:submit|preventDefault={saveStory} style="margin: 1rem 0 0 0;">
+        <label>
+          Media paths (comma-separated)
+          <input type="text" bind:value={formMedia} placeholder="media/stories/example.jpg" required />
+        </label>
+        
+        <label>
+          Author (optional)
+          <input type="text" bind:value={formAuthor} />
+        </label>
+        
+        <div class="grid">
+          <label>
+            Published at
+            <input type="datetime-local" bind:value={formPublishedAt} required />
+          </label>
+          <label>
+            Expires at
+            <input type="datetime-local" bind:value={formExpiresAt} required />
+          </label>
+        </div>
+        
+        <footer style="margin-top: 1rem; padding-bottom: 0;">
+          <button type="button" class="secondary" style="border-radius: 99px;" on:click={() => showDialog = false}>Cancel</button>
+          <button type="submit" style="border-radius: 99px;">Save Story</button>
         </footer>
       </form>
     </article>
