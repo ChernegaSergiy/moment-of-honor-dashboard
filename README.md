@@ -51,20 +51,22 @@ All writes go through the CMS API exactly as documented in its README — this d
 ```text
 moment-of-honor-dashboard/
 +-- index.html      # Vite entry point
++-- .env            # Hardcoded API configuration (VITE_API_BASE_URL)
 +-- vite.config.js  # Vite configuration
 +-- package.json    # Dependencies and build scripts
 \-- src/
-    +-- main.js       # App entry (mounts Svelte and loads PicoCSS)
-    +-- App.svelte    # Main shell: settings, sign-in, tabs, status banner
+    +-- main.js       # App entry (mounts Svelte and loads CSS)
+    +-- App.svelte    # Main shell: sign-in, tabs, status banner
     \-- lib/
-        +-- api.js    # API Client wrapper
-        +-- auth.js   # Auth/session logic
-        +-- config.js # LocalStorage configuration for API URL
-        +-- media.js  # Media upload and clipboard utilities
-        +-- style.css # PicoCSS overrides
-        +-- Posts.svelte   # Posts tab and creation modal
-        +-- Stories.svelte # Stories tab and creation modal
-        \-- Media.svelte   # Media tab and upload form
+        +-- style.css # PicoCSS overrides and dashboard layout
+        +-- components/
+            +-- Posts.svelte   # Posts tab and creation form
+            +-- Stories.svelte # Stories tab and creation form
+            \-- Media.svelte   # Media tab and upload form
+        \-- utils/
+            +-- api.js    # API Client wrapper
+            +-- auth.js   # Auth/session logic
+            \-- config.js # Configuration variables
 ```
 
 ## Local development
