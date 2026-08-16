@@ -45,18 +45,18 @@ All writes go through the CMS API exactly as documented in its README — this d
 
 ```text
 moment-of-honor-dashboard/
-+-- index.html          Page shell: settings, sign-in, and the three tabs
++-- index.html      # Page shell: settings, sign-in, and the three tabs
 +-- css/
-|   \-- style.css       Small overrides on top of Pico classless
+|   \-- style.css   # Small overrides on top of Pico classless
 \-- js/
-    +-- app.js          Bootstrap: wires every module to the DOM
-    +-- api.js          fetch wrapper for the CMS API
-    +-- config.js       Stores the API base URL in localStorage
-    +-- auth.js         Sign-in / sign-out flow
-    +-- posts.js        Post list rendering + form (de)serialization
-    +-- stories.js      Story list rendering + form (de)serialization
-    +-- media.js        Media upload + copy-to-clipboard
-    \-- dom.js          Small createElement / formatting helpers
+    +-- app.js      # Bootstrap: wires every module to the DOM
+    +-- api.js      # fetch wrapper for the CMS API
+    +-- config.js   # Stores the API base URL in localStorage
+    +-- auth.js     # Sign-in / sign-out flow
+    +-- posts.js    # Post list rendering + form (de)serialization
+    +-- stories.js  # Story list rendering + form (de)serialization
+    +-- media.js    # Media upload + copy-to-clipboard
+    \-- dom.js      # Small createElement / formatting helpers
 ```
 
 ## Local development
