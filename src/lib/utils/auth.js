@@ -17,11 +17,16 @@ export function isSignInRedirect() {
   return new URLSearchParams(window.location.search).get('authenticated') === 'true';
 }
 
-/** Strips the `authenticated`/`login` query params added by the redirect. */
+export function getSignInError() {
+  return new URLSearchParams(window.location.search).get('error');
+}
+
+/** Strips the `authenticated`/`login`/`error` query params added by the redirect. */
 export function clearSignInRedirectParams() {
   const url = new URL(window.location.href);
   url.searchParams.delete('authenticated');
   url.searchParams.delete('login');
+  url.searchParams.delete('error');
   window.history.replaceState({}, '', url.toString());
 }
 

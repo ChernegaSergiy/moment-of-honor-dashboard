@@ -2,7 +2,7 @@
   import { onMount } from 'svelte';
   import { ApiClient } from './lib/utils/api.js';
   import { getApiBaseUrl } from './lib/utils/config.js';
-  import { redirectToSignIn, isSignInRedirect, clearSignInRedirectParams, signOut } from './lib/utils/auth.js';
+  import { redirectToSignIn, isSignInRedirect, clearSignInRedirectParams, signOut, getSignInError } from './lib/utils/auth.js';
   import Posts from './lib/components/Posts.svelte';
   import Stories from './lib/components/Stories.svelte';
   import Media from './lib/components/Media.svelte';
@@ -25,8 +25,11 @@
   async function bootstrap() {
     const baseUrl = getApiBaseUrl();
     api = new ApiClient(baseUrl);
-    
-    if (isSignInRedirect()) {
+    const signInErr = getSignInError();
+    if (signInErr) {
+      clearSignInRedirectParams();
+      displayBanner(signInErr, true);
+    } else if (isSignInRedirect()) {
       clearSignInRedirectParams();
       displayBanner('Signed in successfully');
     }
