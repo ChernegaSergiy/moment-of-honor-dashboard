@@ -34,13 +34,13 @@ The dashboard and `moment-of-honor-cms` normally run on different origins (e.g. 
 1. Deploy this dashboard and note its URL (e.g. `https://moment-of-honor-dashboard.pages.dev`).
 2. In `moment-of-honor-cms`'s `wrangler.toml`, add that origin to `ALLOWED_ORIGINS` (comma-separated if there's more than one, e.g. a custom domain and a `*.pages.dev` preview URL).
 3. Redeploy the Worker.
-4. Set the dashboard's API base URL (in Settings) to the Worker's URL.
+4. Set the `VITE_API_BASE_URL` in the dashboard's `.env` file (or Cloudflare Pages environment variables) to the Worker's URL.
 
-Without this, sign-in and every API call will fail outright — the Worker won't send `Access-Control-Allow-Origin` for an origin it doesn't recognize, and the browser blocks the request. The dashboard detects a cross-origin API URL and reminds you to check `ALLOWED_ORIGINS` in Settings, so this isn't a silent failure.
+Without this, sign-in and every API call will fail outright — the Worker won't send `Access-Control-Allow-Origin` for an origin it doesn't recognize, and the browser blocks the request.
 
 ## Using the dashboard
 
-1. Open the deployed site. On first load you're asked for the CMS API base URL — the Worker's `*.workers.dev` URL or custom domain, once its `ALLOWED_ORIGINS` includes this dashboard's origin (see above).
+1. Open the deployed site. Because the API URL is injected at build time, you will immediately see the login screen.
 2. Click **Sign in with GitHub**. You're sent to GitHub's consent screen and back automatically — no popup, no manual step.
 3. Use the **Posts**, **Stories**, and **Media** tabs to manage content. Uploading media returns a repository path (e.g. `media/posts/…`); copy it into the `Media paths` field of a post or story.
 
