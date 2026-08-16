@@ -2,11 +2,11 @@
 
 A small author-facing dashboard for the [`moment-of-honor-cms`](https://github.com/ChernegaSergiy/moment-of-honor-cms) API: sign in with GitHub, create/edit/delete posts and stories, and upload media.
 
-The CMS API is intentionally UI-less — it's a serverless backend, not a product. This repository is a from-scratch, single-purpose client for it, free to make its own technology choices. Those choices here are deliberately narrow:
+The CMS API is intentionally UI-less — it's a serverless backend, not a product. This repository is a from-scratch, single-purpose client for it.
 
-- **No framework, no build step.** Plain HTML, CSS, and ES modules, served as static files.
+- **Svelte + Vite.** Built as a fast, modern Single Page Application using Svelte.
 - **[Pico CSS](https://picocss.com) (classless build).** Semantic HTML is styled automatically; there's no utility classes to maintain for a UI this small.
-- **[Cloudflare Pages](https://pages.cloudflare.com).** One-click deploy, matching how `moment-of-honor-cms` already runs on Cloudflare Workers.
+- **[Cloudflare Pages](https://pages.cloudflare.com).** Deploys as a static site, matching how `moment-of-honor-cms` already runs on Cloudflare Workers.
 
 ## Screenshots
 
@@ -20,7 +20,12 @@ The CMS API is intentionally UI-less — it's a serverless backend, not a produc
 
 [![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/ChernegaSergiy/moment-of-honor-dashboard)
 
-This deploys the static site as-is — there is nothing to build or configure at deploy time. Configuration (the CMS API URL) happens once, in the browser, on first load.
+When deploying manually to Cloudflare Pages, use the following settings:
+- **Framework preset:** `Vite` (or `None`)
+- **Build command:** `npm run build`
+- **Build output directory:** `dist`
+
+Configuration (the CMS API URL) happens once, in the browser, on first load.
 
 ## Cross-origin setup (Worker configuration)
 
@@ -45,30 +50,36 @@ All writes go through the CMS API exactly as documented in its README — this d
 
 ```text
 moment-of-honor-dashboard/
-+-- index.html      # Page shell: settings, sign-in, and the three tabs
-+-- css/
-|   \-- style.css   # Small overrides on top of Pico classless
-\-- js/
-    +-- app.js      # Bootstrap: wires every module to the DOM
-    +-- api.js      # fetch wrapper for the CMS API
-    +-- config.js   # Stores the API base URL in localStorage
-    +-- auth.js     # Sign-in / sign-out flow
-    +-- posts.js    # Post list rendering + form (de)serialization
-    +-- stories.js  # Story list rendering + form (de)serialization
-    +-- media.js    # Media upload + copy-to-clipboard
-    \-- dom.js      # Small createElement / formatting helpers
++-- index.html      # Vite entry point
++-- vite.config.js  # Vite configuration
++-- package.json    # Dependencies and build scripts
+\-- src/
+    +-- main.js       # App entry (mounts Svelte and loads PicoCSS)
+    +-- App.svelte    # Main shell: settings, sign-in, tabs, status banner
+    \-- lib/
+        +-- api.js    # API Client wrapper
+        +-- auth.js   # Auth/session logic
+        +-- config.js # LocalStorage configuration for API URL
+        +-- media.js  # Media upload and clipboard utilities
+        +-- style.css # PicoCSS overrides
+        +-- Posts.svelte   # Posts tab and creation modal
+        +-- Stories.svelte # Stories tab and creation modal
+        \-- Media.svelte   # Media tab and upload form
 ```
 
 ## Local development
 
-No build step — any static file server works:
+To run the dashboard locally:
 
 ```bash
-python3 -m http.server 8080
-# or: npx serve .
+# Install dependencies
+npm install
+
+# Start the Vite development server
+npm run dev
 ```
 
-Then open `http://localhost:8080` and point Settings at your Worker's `*.workers.dev` URL or local `wrangler dev` address. Cross-origin limitations from the section above still apply.
+Then open `http://localhost:5173` and point Settings at your Worker's `*.workers.dev` URL or local `wrangler dev` address. Cross-origin limitations from the section above still apply.
 
 ## Contributing
 
