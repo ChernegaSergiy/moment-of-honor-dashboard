@@ -99,4 +99,4 @@ limitations from the section above still apply.
 
 ## License
 
-CSSM Unlimited License v2.0 — see [LICENCE](LICENCE).
+This project is licensed under the CSSM Unlimited License v2.0 (CSSM-ULv2). See the [LICENCE](LICENCE) file for details.
