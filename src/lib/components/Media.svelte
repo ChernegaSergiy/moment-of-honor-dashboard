@@ -1,5 +1,4 @@
 <script>
-  import { handleMediaUpload, copyToClipboard } from '../utils/media.js';
   export let api;
   export let displayBanner;
 
@@ -14,32 +13,27 @@
     if (!file) return;
 
     isUploading = true;
+    uploadedPath = '';
+    showCopyBtn = false;
+    
     try {
-      // Mocking the result container that handleMediaUpload expects
-      const resultContainer = {
-        set textContent(v) { this._text = v; },
-        get textContent() { return this._text; },
-        dataset: { path: '' }
-      };
-
-      await handleMediaUpload(api, file, kind, resultContainer);
-      
-      uploadedPath = resultContainer.textContent;
-      showCopyBtn = !!resultContainer.dataset.path;
-      if (showCopyBtn) {
-        uploadedPath = resultContainer.dataset.path;
-      }
+      const { path } = await api.uploadMedia(file, kind);
+      uploadedPath = path;
+      showCopyBtn = true;
     } catch (err) {
-      showCopyBtn = false;
-      displayBanner('Media upload failed', true);
+      displayBanner(err.message || 'Media upload failed', true);
     } finally {
       isUploading = false;
     }
   }
 
   async function onCopy() {
-    const copied = await copyToClipboard(uploadedPath);
-    displayBanner(copied ? 'Path copied to clipboard!' : 'Copy not supported in this browser');
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      await navigator.clipboard.writeText(uploadedPath);
+      displayBanner('Path copied to clipboard!');
+    } else {
+      displayBanner('Copy not supported in this browser', true);
+    }
   }
 </script>
 
