@@ -17,6 +17,14 @@ deliberately narrow:
 - **[Cloudflare Pages](https://pages.cloudflare.com).** One-click deploy,
   matching how `moment-of-honor-cms` already runs on Cloudflare Workers.
 
+## Screenshots
+
+| Sign In | Posts |
+| :---: | :---: |
+| ![Sign In](docs/images/01-login.png) | ![Posts](docs/images/02-posts.png) |
+| **New Post** | **Stories** |
+| ![New Post](docs/images/03-new-post.png) | ![Stories](docs/images/04-stories.png) |
+
 ## Deploy
 
 [![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/ChernegaSergiy/moment-of-honor-dashboard)
