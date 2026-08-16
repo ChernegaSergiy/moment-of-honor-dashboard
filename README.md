@@ -60,9 +60,9 @@ moment-of-honor-dashboard/
     \-- lib/
         +-- style.css # PicoCSS overrides and dashboard layout
         +-- components/
-            +-- Posts.svelte   # Posts tab and creation form
-            +-- Stories.svelte # Stories tab and creation form
-            \-- Media.svelte   # Media tab and upload form
+        |   +-- Posts.svelte   # Posts tab and creation form
+        |   +-- Stories.svelte # Stories tab and creation form
+        |   \-- Media.svelte   # Media tab and upload form
         \-- utils/
             +-- api.js    # API Client wrapper
             +-- auth.js   # Auth/session logic
