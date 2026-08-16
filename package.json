@@ -1,7 +1,7 @@
 {
-  "name": "svelte-temp",
+  "name": "moment-of-honor-dashboard",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -10,7 +10,6 @@
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^7.2.0",
-    "playwright": "^1.62.1",
     "svelte": "^5.56.8",
     "vite": "^8.2.0"
   },
