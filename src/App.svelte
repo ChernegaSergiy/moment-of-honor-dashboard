@@ -1,23 +1,19 @@
 <script>
   import { onMount } from 'svelte';
   import { ApiClient } from './lib/utils/api.js';
-  import { getApiBaseUrl, setApiBaseUrl, isCrossOrigin } from './lib/utils/config.js';
+  import { getApiBaseUrl } from './lib/utils/config.js';
   import { redirectToSignIn, isSignInRedirect, clearSignInRedirectParams, signOut } from './lib/utils/auth.js';
   import Posts from './lib/components/Posts.svelte';
   import Stories from './lib/components/Stories.svelte';
   import Media from './lib/components/Media.svelte';
 
   let api = null;
-  let view = 'settings'; // 'settings', 'login', 'app'
+  let view = 'login'; // 'login', 'app'
   let activeTab = 'posts'; // 'posts', 'stories', 'media'
   let authStatusText = '';
   let statusMessage = '';
   let statusIsError = false;
   let showBanner = false;
-  
-  let settingsUrl = '';
-  let crossOriginWarning = false;
-  let crossOriginValue = '';
 
   function displayBanner(msg, isErr = false) {
     statusMessage = msg;
@@ -28,16 +24,6 @@
 
   async function bootstrap() {
     const baseUrl = getApiBaseUrl();
-    if (!baseUrl) {
-      view = 'settings';
-      settingsUrl = '';
-      return;
-    }
-    
-    settingsUrl = baseUrl;
-    crossOriginWarning = isCrossOrigin(baseUrl);
-    crossOriginValue = window.location.origin;
-    
     api = new ApiClient(baseUrl);
     
     if (isSignInRedirect()) {
@@ -63,42 +49,12 @@
     bootstrap().catch(err => displayBanner(err.message || 'Unexpected error', true));
   });
 
-  function saveSettings() {
-    setApiBaseUrl(settingsUrl.trim());
-    bootstrap();
-  }
-
   async function doSignOut() {
     try { await signOut(api); } catch {}
     authStatusText = '';
     view = 'login';
   }
 </script>
-
-{#if view === 'settings'}
-  <div class="auth-layout">
-    <div class="auth-card">
-      <h2 style="margin-bottom: 0.5rem; color: var(--primary);">CMS Configuration</h2>
-      <p style="color: var(--pico-muted-color); margin-bottom: 2rem;">Link your dashboard to the API.</p>
-      
-      <form on:submit|preventDefault={saveSettings} style="text-align: left;">
-        <label>
-          API Base URL
-          <input type="url" bind:value={settingsUrl} placeholder="https://api.example.com" required style="margin-bottom: 1.5rem;" />
-        </label>
-        <button type="submit" style="width: 100%; border-radius: 99px;">Connect Dashboard</button>
-      </form>
-      
-      {#if crossOriginWarning}
-        <article style="background-color: var(--pico-form-element-background-color); margin-top: 2rem; padding: 1rem; text-align: left; border-left: 4px solid var(--pico-color);">
-          <small>
-            <strong>Note:</strong> Cross-origin setup detected. Ensure the Worker config allows <code>{crossOriginValue}</code> in <code>ALLOWED_ORIGINS</code>.
-          </small>
-        </article>
-      {/if}
-    </div>
-  </div>
-{/if}
 
 {#if view === 'login'}
   <div class="auth-layout">
@@ -132,14 +88,6 @@
           <li><a href="#" class:active={activeTab === 'media'} on:click|preventDefault={() => activeTab = 'media'}>Media</a></li>
         </ul>
       </nav>
-      
-      <div class="sidebar-footer">
-        <nav>
-          <ul>
-            <li><a href="#" on:click|preventDefault={() => { settingsUrl = getApiBaseUrl(); view = 'settings'; }} style="color: var(--pico-muted-color);">Settings</a></li>
-          </ul>
-        </nav>
-      </div>
     </aside>
     
     <div class="main-content">
