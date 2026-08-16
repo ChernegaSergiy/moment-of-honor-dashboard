@@ -1,11 +1,11 @@
 <script>
   import { onMount } from 'svelte';
-  import { ApiClient } from './lib/api.js';
-  import { getApiBaseUrl, setApiBaseUrl, isCrossOrigin } from './lib/config.js';
-  import { redirectToSignIn, isSignInRedirect, clearSignInRedirectParams, signOut } from './lib/auth.js';
-  import Posts from './lib/Posts.svelte';
-  import Stories from './lib/Stories.svelte';
-  import Media from './lib/Media.svelte';
+  import { ApiClient } from './lib/utils/api.js';
+  import { getApiBaseUrl, setApiBaseUrl, isCrossOrigin } from './lib/utils/config.js';
+  import { redirectToSignIn, isSignInRedirect, clearSignInRedirectParams, signOut } from './lib/utils/auth.js';
+  import Posts from './lib/components/Posts.svelte';
+  import Stories from './lib/components/Stories.svelte';
+  import Media from './lib/components/Media.svelte';
 
   let api = null;
   let view = 'settings'; // 'settings', 'login', 'app'

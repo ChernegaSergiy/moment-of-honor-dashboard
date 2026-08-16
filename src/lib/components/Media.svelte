@@ -1,5 +1,5 @@
 <script>
-  import { handleMediaUpload, copyToClipboard } from './media.js';
+  import { handleMediaUpload, copyToClipboard } from '../utils/media.js';
   export let api;
   export let displayBanner;
 
