@@ -22,6 +22,8 @@
 
   onMount(() => loadStories());
 
+  let initialFormState = {};
+
   function openDialog(story = null) {
     editingStory = story;
     if (story) {
@@ -39,7 +41,21 @@
       now.setDate(now.getDate() + 1);
       formExpiresAt = now.toISOString().slice(0, 16);
     }
+    
+    initialFormState = { formMedia, formAuthor, formPublishedAt, formExpiresAt };
     showDialog = true;
+  }
+
+  function closeDialog() {
+    const isModified = formMedia !== initialFormState.formMedia ||
+                       formAuthor !== initialFormState.formAuthor ||
+                       formPublishedAt !== initialFormState.formPublishedAt ||
+                       formExpiresAt !== initialFormState.formExpiresAt;
+                       
+    if (isModified && !confirm("You have unsaved changes. Are you sure you want to close?")) {
+      return;
+    }
+    showDialog = false;
   }
 
   async function saveStory() {
@@ -136,7 +152,7 @@
         </div>
         
         <footer style="margin-top: 1rem; padding-bottom: 0;">
-          <button type="button" class="secondary" style="border-radius: 99px;" on:click={() => showDialog = false}>Cancel</button>
+          <button type="button" class="secondary" style="border-radius: 99px;" on:click={closeDialog}>Cancel</button>
           <button type="submit" style="border-radius: 99px;">Save Story</button>
         </footer>
       </form>

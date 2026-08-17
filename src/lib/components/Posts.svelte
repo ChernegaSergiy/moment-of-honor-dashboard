@@ -23,6 +23,8 @@
 
   onMount(() => loadPosts());
 
+  let initialFormState = {};
+
   function openDialog(post = null) {
     editingPost = post;
     if (post) {
@@ -40,7 +42,23 @@
       formAuthor = '';
       formPublishedAt = new Date().toISOString().slice(0, 16);
     }
+    
+    // Save state to detect unsaved changes later
+    initialFormState = { formTitle, formContent, formMedia, formAuthor, formPublishedAt };
     showDialog = true;
+  }
+
+  function closeDialog() {
+    const isModified = formTitle !== initialFormState.formTitle ||
+                       formContent !== initialFormState.formContent ||
+                       formMedia !== initialFormState.formMedia ||
+                       formAuthor !== initialFormState.formAuthor ||
+                       formPublishedAt !== initialFormState.formPublishedAt;
+                       
+    if (isModified && !confirm("You have unsaved changes. Are you sure you want to close?")) {
+      return;
+    }
+    showDialog = false;
   }
 
   async function savePost() {
@@ -140,7 +158,7 @@
         </div>
         
         <footer style="margin-top: 1rem; padding-bottom: 0;">
-          <button type="button" class="secondary" style="border-radius: 99px;" on:click={() => showDialog = false}>Cancel</button>
+          <button type="button" class="secondary" style="border-radius: 99px;" on:click={closeDialog}>Cancel</button>
           <button type="submit" style="border-radius: 99px;">Save Post</button>
         </footer>
       </form>
