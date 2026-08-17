@@ -97,6 +97,11 @@ export class ApiClient {
     return this.#request('/api/media', { method: 'POST', body: form });
   }
 
+  listMedia(kind) {
+    const query = kind ? `?kind=${encodeURIComponent(kind)}` : '';
+    return this.#request(`/api/media${query}`);
+  }
+
   // --- Auth ---------------------------------------------------------
 
   /** Resolves true if the current session can call the authenticated API. */
