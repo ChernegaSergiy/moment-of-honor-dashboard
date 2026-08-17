@@ -102,6 +102,14 @@ export class ApiClient {
     return this.#request(`/api/media${query}`);
   }
 
+  deleteMedia(path) {
+    return this.#request('/api/media', {
+      method: 'DELETE',
+      body: JSON.stringify({ path }),
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
   // --- Auth ---------------------------------------------------------
 
   /** Resolves true if the current session can call the authenticated API. */
