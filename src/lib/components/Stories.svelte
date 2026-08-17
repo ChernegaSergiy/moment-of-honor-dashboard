@@ -23,6 +23,7 @@
   onMount(() => loadStories());
 
   let initialFormState = {};
+  let isSubmitting = false;
 
   function openDialog(story = null) {
     editingStory = story;
@@ -59,6 +60,9 @@
   }
 
   async function saveStory() {
+    if (isSubmitting) return;
+    isSubmitting = true;
+    
     const payload = {
       media: formMedia.split(',').map(s => s.trim()).filter(Boolean),
       author: formAuthor || undefined,
@@ -73,6 +77,8 @@
       await loadStories();
     } catch (err) {
       displayBanner(err.message || 'Could not save story', true);
+    } finally {
+      isSubmitting = false;
     }
   }
 
@@ -152,8 +158,10 @@
         </div>
         
         <footer style="margin-top: 1rem; padding-bottom: 0;">
-          <button type="button" class="secondary" style="border-radius: 99px;" on:click={closeDialog}>Cancel</button>
-          <button type="submit" style="border-radius: 99px;">Save Story</button>
+          <button type="button" class="secondary" style="border-radius: 99px;" on:click={closeDialog} disabled={isSubmitting}>Cancel</button>
+          <button type="submit" style="border-radius: 99px;" disabled={isSubmitting}>
+            {isSubmitting ? 'Saving...' : (editingStory ? 'Save Story' : 'Create Story')}
+          </button>
         </footer>
       </form>
     </article>

@@ -24,6 +24,7 @@
   onMount(() => loadPosts());
 
   let initialFormState = {};
+  let isSubmitting = false;
 
   function openDialog(post = null) {
     editingPost = post;
@@ -62,6 +63,9 @@
   }
 
   async function savePost() {
+    if (isSubmitting) return;
+    isSubmitting = true;
+    
     const payload = {
       title: formTitle,
       content: formContent,
@@ -77,6 +81,8 @@
       await loadPosts();
     } catch (err) {
       displayBanner(err.message || 'Could not save post', true);
+    } finally {
+      isSubmitting = false;
     }
   }
 
@@ -158,8 +164,10 @@
         </div>
         
         <footer style="margin-top: 1rem; padding-bottom: 0;">
-          <button type="button" class="secondary" style="border-radius: 99px;" on:click={closeDialog}>Cancel</button>
-          <button type="submit" style="border-radius: 99px;">Save Post</button>
+          <button type="button" class="secondary" style="border-radius: 99px;" on:click={closeDialog} disabled={isSubmitting}>Cancel</button>
+          <button type="submit" style="border-radius: 99px;" disabled={isSubmitting}>
+            {isSubmitting ? 'Saving...' : (editingPost ? 'Save Post' : 'Create Post')}
+          </button>
         </footer>
       </form>
     </article>
