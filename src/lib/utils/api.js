@@ -89,12 +89,45 @@ export class ApiClient {
 
   // --- Media ---------------------------------------------------------
 
-  async uploadMedia(file, kind) {
-    const form = new FormData();
-    form.append('file', file);
-    form.append('kind', kind);
+  uploadMedia(file, kind, onProgress) {
+    return new Promise((resolve, reject) => {
+      const form = new FormData();
+      form.append('file', file);
+      form.append('kind', kind);
 
-    return this.#request('/api/media', { method: 'POST', body: form });
+      const xhr = new XMLHttpRequest();
+      xhr.withCredentials = true;
+      xhr.open('POST', `${this.baseUrl}/api/media`);
+
+      if (onProgress && xhr.upload) {
+        xhr.upload.addEventListener('progress', (e) => {
+          if (e.lengthComputable) {
+            onProgress(Math.round((e.loaded * 100) / e.total));
+          }
+        });
+      }
+
+      xhr.onload = () => {
+        let data = null;
+        if (xhr.responseText) {
+          try {
+            data = JSON.parse(xhr.responseText);
+          } catch {
+            data = xhr.responseText;
+          }
+        }
+        
+        if (xhr.status >= 200 && xhr.status < 300) {
+          resolve(data);
+        } else {
+          const message = (data && data.error) || `Request failed with status ${xhr.status}`;
+          reject(new ApiError(message, xhr.status));
+        }
+      };
+
+      xhr.onerror = () => reject(new ApiError('Network error', 0));
+      xhr.send(form);
+    });
   }
 
   listMedia(kind) {

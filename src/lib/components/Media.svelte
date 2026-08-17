@@ -8,6 +8,7 @@
   let isLoading = false;
   let fileInput;
   let isUploading = false;
+  let uploadProgress = 0;
 
   async function loadMedia() {
     isLoading = true;
@@ -32,14 +33,18 @@
     if (!file) return;
 
     isUploading = true;
+    uploadProgress = 0;
     try {
-      await api.uploadMedia(file, kind);
+      await api.uploadMedia(file, kind, (pct) => {
+        uploadProgress = pct;
+      });
       displayBanner('Media uploaded successfully');
       await loadMedia();
     } catch (err) {
       displayBanner(err.message || 'Media upload failed', true);
     } finally {
       isUploading = false;
+      uploadProgress = 0;
       if (fileInput) fileInput.value = '';
     }
   }
@@ -73,8 +78,12 @@
   </div>
   <div>
     <input type="file" accept="image/*,video/mp4" style="display: none" bind:this={fileInput} on:change={handleFileUpload} />
-    <button type="button" style="border-radius: 99px; padding: 0.5rem 1.5rem;" on:click={() => fileInput.click()} disabled={isUploading}>
-      {isUploading ? 'Uploading...' : '+ Upload'}
+    <button type="button" style="border-radius: 99px; padding: 0.5rem 1.5rem; width: 150px;" on:click={() => fileInput.click()} disabled={isUploading}>
+      {#if isUploading}
+        <span aria-busy="true">{uploadProgress}%</span>
+      {:else}
+        + Upload
+      {/if}
     </button>
   </div>
 </div>

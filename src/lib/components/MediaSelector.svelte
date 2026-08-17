@@ -48,6 +48,7 @@
   }
 
   let isUploading = false;
+  let uploadProgress = 0;
   let fileInput;
 
   async function handleFileUpload(event) {
@@ -55,8 +56,11 @@
     if (!file) return;
 
     isUploading = true;
+    uploadProgress = 0;
     try {
-      const result = await api.uploadMedia(file, kind);
+      const result = await api.uploadMedia(file, kind, (pct) => {
+        uploadProgress = pct;
+      });
       
       // Refresh the available media list
       availableMedia = await api.listMedia(kind);
@@ -71,6 +75,7 @@
       displayBanner(err.message || 'Could not upload media', true);
     } finally {
       isUploading = false;
+      uploadProgress = 0;
       if (fileInput) fileInput.value = '';
     }
   }
@@ -102,9 +107,9 @@
         <h3 style="margin: 0;">Media Library</h3>
         <div>
            <input type="file" accept="image/*,video/*" style="display: none" bind:this={fileInput} on:change={handleFileUpload} />
-           <button type="button" class="secondary" style="margin: 0; border-radius: 99px; padding: 0.35rem 1rem;" on:click={() => fileInput.click()} disabled={isUploading}>
+           <button type="button" class="secondary" style="margin: 0; border-radius: 99px; padding: 0.35rem 1rem; width: 140px;" on:click={() => fileInput.click()} disabled={isUploading}>
              {#if isUploading}
-               <span aria-busy="true">Uploading...</span>
+               <span aria-busy="true">{uploadProgress}%</span>
              {:else}
                + Upload
              {/if}
