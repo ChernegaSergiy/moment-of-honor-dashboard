@@ -45,6 +45,34 @@
     mediaPaths[index] = mediaPaths[index + 1];
     mediaPaths[index + 1] = item;
   }
+
+  let isUploading = false;
+  let fileInput;
+
+  async function handleFileUpload(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    isUploading = true;
+    try {
+      const result = await api.uploadMedia(file, kind);
+      
+      // Refresh the available media list
+      availableMedia = await api.listMedia(kind);
+      
+      // Automatically select the newly uploaded file
+      if (result && result.path && !mediaPaths.includes(result.path)) {
+        mediaPaths = [...mediaPaths, result.path];
+      }
+      
+      displayBanner('Media uploaded successfully');
+    } catch (err) {
+      displayBanner(err.message || 'Could not upload media', true);
+    } finally {
+      isUploading = false;
+      if (fileInput) fileInput.value = '';
+    }
+  }
 </script>
 
 <div>
@@ -71,8 +99,18 @@
 {#if showMediaGallery}
   <dialog open>
     <article style="max-width: 800px; width: 100%;">
-      <header>
+      <header style="display: flex; justify-content: space-between; align-items: center;">
         <h3 style="margin: 0;">Media Library</h3>
+        <div>
+           <input type="file" accept="image/*,video/*" style="display: none" bind:this={fileInput} on:change={handleFileUpload} />
+           <button type="button" class="secondary" style="margin: 0; border-radius: 99px; padding: 0.35rem 1rem;" on:click={() => fileInput.click()} disabled={isUploading}>
+             {#if isUploading}
+               <span aria-busy="true">Uploading...</span>
+             {:else}
+               + Upload
+             {/if}
+           </button>
+        </div>
       </header>
       
       {#if isLoadingMedia}
