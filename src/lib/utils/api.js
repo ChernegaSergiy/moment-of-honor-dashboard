@@ -21,9 +21,6 @@ export class ApiClient {
 
     if (typeof body === 'string') {
       headers['Content-Type'] = 'application/json';
-      if (options.method && ['POST', 'PUT', 'PATCH'].includes(options.method)) {
-        body = JSON.stringify({ __waf_bypass_b64: btoa(unescape(encodeURIComponent(body))) });
-      }
     }
 
     const response = await fetch(`${this.baseUrl}${path}`, {
