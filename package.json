@@ -14,6 +14,7 @@
     "vite": "^8.2.0"
   },
   "dependencies": {
-    "@picocss/pico": "^2.1.1"
+    "@picocss/pico": "^2.1.1",
+    "svelte-dnd-action": "^0.9.78"
   }
 }
