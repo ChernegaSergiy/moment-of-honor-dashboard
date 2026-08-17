@@ -1,4 +1,5 @@
 <script>
+  import { dndzone } from 'svelte-dnd-action';
   export let api;
   export let kind; // 'posts' or 'stories'
   export let mediaPaths = [];
@@ -7,6 +8,20 @@
   let showMediaGallery = false;
   let isLoadingMedia = false;
   let availableMedia = [];
+
+  // dnd logic
+  let dndItems = [];
+  $: dndItems = mediaPaths.map(path => ({ id: path }));
+  const flipDurationMs = 200;
+
+  function handleDndConsider(e) {
+    dndItems = e.detail.items;
+  }
+
+  function handleDndFinalize(e) {
+    dndItems = e.detail.items;
+    mediaPaths = dndItems.map(item => item.id);
+  }
 
   async function openMediaGallery() {
     showMediaGallery = true;
@@ -28,22 +43,8 @@
     }
   }
 
-  function removeMedia(index) {
-    mediaPaths = mediaPaths.filter((_, i) => i !== index);
-  }
-
-  function moveMediaUp(index) {
-    if (index === 0) return;
-    const item = mediaPaths[index];
-    mediaPaths[index] = mediaPaths[index - 1];
-    mediaPaths[index - 1] = item;
-  }
-
-  function moveMediaDown(index) {
-    if (index === mediaPaths.length - 1) return;
-    const item = mediaPaths[index];
-    mediaPaths[index] = mediaPaths[index + 1];
-    mediaPaths[index + 1] = item;
+  function removeMediaByPath(path) {
+    mediaPaths = mediaPaths.filter((p) => p !== path);
   }
 
   let isUploading = false;
@@ -76,18 +77,16 @@
 </script>
 
 <div>
-  <label>Media</label>
+  <label>Media (Drag to reorder)</label>
   {#if mediaPaths.length > 0}
-    <div class="media-grid">
-      {#each mediaPaths as path, i}
+    <div class="media-grid" use:dndzone={{items: dndItems, flipDurationMs}} on:consider={handleDndConsider} on:finalize={handleDndFinalize}>
+      {#each dndItems as item (item.id)}
         <div>
           <div class="media-item">
-            <img src="https://raw.githubusercontent.com/ChernegaSergiy/moment-of-honor-content/main/{path}" alt="media" />
+            <img src="https://raw.githubusercontent.com/ChernegaSergiy/moment-of-honor-content/main/{item.id}" alt="media" draggable="false" />
           </div>
           <div class="media-controls">
-            <button type="button" class="secondary outline" on:click={() => moveMediaUp(i)} disabled={i === 0}>↑</button>
-            <button type="button" class="secondary outline" on:click={() => moveMediaDown(i)} disabled={i === mediaPaths.length - 1}>↓</button>
-            <button type="button" class="secondary outline" style="color: var(--pico-del-color); border-color: var(--pico-del-color);" on:click={() => removeMedia(i)}>✕</button>
+            <button type="button" class="secondary outline" style="color: var(--pico-del-color); border-color: var(--pico-del-color);" on:click={() => removeMediaByPath(item.id)}>Remove</button>
           </div>
         </div>
       {/each}
