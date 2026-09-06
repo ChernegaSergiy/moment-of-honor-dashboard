@@ -78,7 +78,7 @@
   </div>
   <div>
     <input type="file" accept="image/*,video/mp4" style="display: none" bind:this={fileInput} on:change={handleFileUpload} />
-    <button type="button" style="border-radius: 99px; padding: 0.5rem 1.5rem; width: 150px;" on:click={() => fileInput.click()} disabled={isUploading}>
+    <button type="button" style="border-radius: 99px; padding: 0.5rem 1.5rem;" on:click={() => fileInput.click()} disabled={isUploading}>
       {#if isUploading}
         <span aria-busy="true">{uploadProgress}%</span>
       {:else}
