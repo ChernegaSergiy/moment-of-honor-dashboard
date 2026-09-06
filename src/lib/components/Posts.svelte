@@ -4,6 +4,7 @@
   export let displayBanner;
 
   let posts = [];
+  let isLoading = false;
   let showDialog = false;
   let editingPost = null;
   let formId = '';
@@ -14,10 +15,13 @@
   let formPublishedAt = '';
 
   async function loadPosts() {
+    isLoading = true;
     try {
       posts = await api.listPosts();
     } catch (err) {
       displayBanner(err.message || 'Could not load posts', true);
+    } finally {
+      isLoading = false;
     }
   }
 
@@ -108,7 +112,11 @@
   <button style="border-radius: 99px; padding: 0.5rem 1.5rem; margin: 0;" on:click={() => openDialog()}>+ New Post</button>
 </div>
 
-{#if posts.length === 0}
+{#if isLoading}
+  <article style="text-align: center; padding: 3rem; background-color: transparent; border: 2px dashed var(--pico-muted-border-color); box-shadow: none;">
+    <p aria-busy="true">Loading posts...</p>
+  </article>
+{:else if posts.length === 0}
   <article style="text-align: center; padding: 3rem; background-color: transparent; border: 2px dashed var(--pico-muted-border-color); box-shadow: none;">
     <p style="color: var(--pico-muted-color); margin: 0;">No posts yet. Create your first one!</p>
   </article>

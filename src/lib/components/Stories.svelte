@@ -4,6 +4,7 @@
   export let displayBanner;
 
   let stories = [];
+  let isLoading = false;
   let showDialog = false;
   let editingStory = null;
   let formId = '';
@@ -13,10 +14,13 @@
   let formExpiresAt = '';
 
   async function loadStories() {
+    isLoading = true;
     try {
       stories = await api.listStories();
     } catch (err) {
       displayBanner(err.message || 'Could not load stories', true);
+    } finally {
+      isLoading = false;
     }
   }
 
@@ -104,7 +108,11 @@
   <button style="border-radius: 99px; padding: 0.5rem 1.5rem; margin: 0;" on:click={() => openDialog()}>+ New Story</button>
 </div>
 
-{#if stories.length === 0}
+{#if isLoading}
+  <article style="text-align: center; padding: 3rem; background-color: transparent; border: 2px dashed var(--pico-muted-border-color); box-shadow: none;">
+    <p aria-busy="true">Loading stories...</p>
+  </article>
+{:else if stories.length === 0}
   <article style="text-align: center; padding: 3rem; background-color: transparent; border: 2px dashed var(--pico-muted-border-color); box-shadow: none;">
     <p style="color: var(--pico-muted-color); margin: 0;">No stories yet. Create your first one!</p>
   </article>
