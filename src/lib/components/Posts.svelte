@@ -105,7 +105,7 @@
     <h1>Posts</h1>
     <p style="color: var(--pico-muted-color); margin: 0;">Manage your articles and announcements.</p>
   </div>
-  <button style="border-radius: 99px; padding: 0.5rem 1.5rem;" on:click={() => openDialog()}>+ New Post</button>
+  <button style="border-radius: 99px; padding: 0.5rem 1.5rem; margin: 0;" on:click={() => openDialog()}>+ New Post</button>
 </div>
 
 {#if posts.length === 0}

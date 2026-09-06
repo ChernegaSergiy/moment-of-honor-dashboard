@@ -77,13 +77,7 @@
     <h1>Media Manager</h1>
     <p style="color: var(--pico-muted-color); margin: 0;">Manage your uploaded files.</p>
   </div>
-  <button type="button" style="border-radius: 99px; padding: 0.5rem 1.5rem;" on:click={() => fileInput.click()} disabled={isUploading}>
-    {#if isUploading}
-      <span aria-busy="true">{uploadProgress}%</span>
-    {:else}
-      + Upload
-    {/if}
-  </button>
+  <button type="button" style="border-radius: 99px; padding: 0.5rem 1.5rem; margin: 0;" on:click={() => fileInput.click()} disabled={isUploading}>{#if isUploading}<span aria-busy="true">{uploadProgress}%</span>{:else}+ Upload{/if}</button>
 </div>
 
 <nav style="margin-bottom: 2rem;">

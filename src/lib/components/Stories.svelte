@@ -101,7 +101,7 @@
     <h1>Stories</h1>
     <p style="color: var(--pico-muted-color); margin: 0;">Manage ephemeral content.</p>
   </div>
-  <button style="border-radius: 99px; padding: 0.5rem 1.5rem;" on:click={() => openDialog()}>+ New Story</button>
+  <button style="border-radius: 99px; padding: 0.5rem 1.5rem; margin: 0;" on:click={() => openDialog()}>+ New Story</button>
 </div>
 
 {#if stories.length === 0}
