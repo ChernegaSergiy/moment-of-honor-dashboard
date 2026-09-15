@@ -265,6 +265,10 @@ article.card footer {
     align-items: flex-start;
     gap: 1rem;
   }
+  dialog article {
+    max-height: calc(100dvh - 2rem);
+    overflow-y: auto;
+  }
 }
 
 /* Media Component Styles */
@@ -317,4 +321,3 @@ article.card footer {
   color: var(--pico-del-color);
   border-color: var(--pico-del-color);
 }
-dialog article { max-height: calc(100dvh - 2rem); overflow-y: auto; }
