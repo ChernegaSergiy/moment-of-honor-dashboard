@@ -20,10 +20,12 @@ The CMS API is intentionally UI-less — it's a serverless backend, not a produc
 
 [![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/ChernegaSergiy/moment-of-honor-dashboard)
 
-When deploying manually to Cloudflare Pages, use the following settings:
-- **Framework preset:** `Vite` (or `None`)
-- **Build command:** `npm run build`
-- **Build output directory:** `dist`
+When deploying manually to Cloudflare Workers, you can use Wrangler:
+
+```bash
+npm run build
+npx wrangler deploy
+```
 
 Configuration (the CMS API URL) happens once, in the browser, on first load.
 
