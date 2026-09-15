@@ -1,5 +1,5 @@
 name = "moment-of-honor-dashboard"
-main = "_worker.js"
+main = "src/worker.js"
 compatibility_date = "2026-08-15"
 
 [assets]
