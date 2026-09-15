@@ -317,3 +317,4 @@ article.card footer {
   color: var(--pico-del-color);
   border-color: var(--pico-del-color);
 }
+dialog article { max-height: calc(100dvh - 2rem); overflow-y: auto; }
