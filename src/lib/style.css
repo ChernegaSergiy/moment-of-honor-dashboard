@@ -88,6 +88,7 @@ body {
 
 .topbar {
   height: 64px;
+  flex-shrink: 0;
   background-color: var(--pico-card-background-color);
   border-bottom: 1px solid var(--pico-muted-border-color);
   display: flex;
