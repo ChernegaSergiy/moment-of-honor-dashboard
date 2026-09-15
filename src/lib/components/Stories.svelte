@@ -29,22 +29,30 @@
   let initialFormState = {};
   let isSubmitting = false;
 
+  function toLocalDatetimeString(dateObj) {
+    const d = new Date(dateObj);
+    return new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+  }
+
   function openDialog(story = null) {
     editingStory = story;
     if (story) {
       formId = story.id;
       formMediaPaths = [...(story.media || [])];
       formAuthor = story.author || '';
-      formPublishedAt = new Date(story.publishedAt).toISOString().slice(0, 16);
-      formExpiresAt = new Date(story.expiresAt).toISOString().slice(0, 16);
+      formPublishedAt = toLocalDatetimeString(story.publishedAt);
+      formExpiresAt = toLocalDatetimeString(story.expiresAt);
     } else {
       formId = '';
       formMediaPaths = [];
       formAuthor = '';
+      
       const now = new Date();
-      formPublishedAt = now.toISOString().slice(0, 16);
-      now.setDate(now.getDate() + 1);
-      formExpiresAt = now.toISOString().slice(0, 16);
+      formPublishedAt = toLocalDatetimeString(now);
+      
+      const tomorrow = new Date(now);
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      formExpiresAt = toLocalDatetimeString(tomorrow);
     }
     
     initialFormState = { formMediaPaths: [...formMediaPaths], formAuthor, formPublishedAt, formExpiresAt };

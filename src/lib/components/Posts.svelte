@@ -30,6 +30,11 @@
   let initialFormState = {};
   let isSubmitting = false;
 
+  function toLocalDatetimeString(dateObj) {
+    const d = new Date(dateObj);
+    return new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+  }
+
   function openDialog(post = null) {
     editingPost = post;
     if (post) {
@@ -38,14 +43,14 @@
       formContent = post.content;
       formMediaPaths = [...(post.media || [])];
       formAuthor = post.author;
-      formPublishedAt = new Date(post.publishedAt).toISOString().slice(0, 16);
+      formPublishedAt = toLocalDatetimeString(post.publishedAt);
     } else {
       formId = '';
       formTitle = '';
       formContent = '';
       formMediaPaths = [];
       formAuthor = '';
-      formPublishedAt = new Date().toISOString().slice(0, 16);
+      formPublishedAt = toLocalDatetimeString(new Date());
     }
     
     // Save state to detect unsaved changes later
