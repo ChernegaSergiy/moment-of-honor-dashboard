@@ -30,6 +30,9 @@
       clearSignInRedirectParams();
       displayBanner(signInErr, true);
     } else if (isSignInRedirect()) {
+      const loginParams = new URLSearchParams(window.location.search);
+      const username = loginParams.get('login');
+      if (username) localStorage.setItem('github_login', username);
       clearSignInRedirectParams();
       displayBanner('Signed in successfully');
     }
@@ -37,13 +40,15 @@
     try {
       const authenticated = await api.checkSession();
       if (authenticated) {
-        authStatusText = 'Connected';
+        const username = localStorage.getItem('github_login');
+        authStatusText = username ? `Connected as @${username}` : 'Connected';
         view = 'app';
       } else {
         view = 'login';
+        localStorage.removeItem('github_login');
       }
     } catch (err) {
-      displayBanner(err.message || 'Could not reach the CMS API', true);
+      displayBanner(err.message, true);
       view = 'login';
     }
   }
@@ -54,6 +59,7 @@
 
   async function doSignOut() {
     try { await signOut(api); } catch {}
+    localStorage.removeItem('github_login');
     authStatusText = '';
     view = 'login';
   }
