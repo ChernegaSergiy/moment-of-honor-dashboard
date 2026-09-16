@@ -83,8 +83,8 @@
   }
 </script>
 
-<div>
-  <p><strong>Media (Drag to reorder)</strong></p>
+<fieldset>
+  <legend>Media (Drag to reorder)</legend>
   {#if mediaPaths.length > 0}
     <div class="media-grid" use:dndzone={{items: dndItems, flipDurationMs}} onconsider={handleDndConsider} onfinalize={handleDndFinalize}>
       {#each dndItems as item (item.id)}
@@ -100,7 +100,7 @@
     </div>
   {/if}
   <button type="button" class="secondary" style="border-radius: 99px; margin-bottom: 1rem;" onclick={openMediaGallery}>Select Media from Library</button>
-</div>
+</fieldset>
 
 {#if showMediaGallery}
   <dialog open>
