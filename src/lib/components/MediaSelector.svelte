@@ -84,7 +84,7 @@
 </script>
 
 <div>
-  <label>Media (Drag to reorder)</label>
+  <div style="margin-bottom: 0.5rem; font-weight: 600;">Media (Drag to reorder)</div>
   {#if mediaPaths.length > 0}
     <div class="media-grid" use:dndzone={{items: dndItems, flipDurationMs}} onconsider={handleDndConsider} onfinalize={handleDndFinalize}>
       {#each dndItems as item (item.id)}
