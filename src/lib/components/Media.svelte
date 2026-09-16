@@ -5,7 +5,7 @@
   let kind = $state('posts');
   let availableMedia = $state([]);
   let isLoading = $state(false);
-  let fileInput;
+  let fileInput = $state();
   let isUploading = $state(false);
   let uploadProgress = $state(0);
 
@@ -70,24 +70,24 @@
   }
 </script>
 
-<input type="file" accept="image/*,video/mp4" style="display: none" bind:this={fileInput} on:change={handleFileUpload} />
+<input type="file" accept="image/*,video/mp4" style="display: none" bind:this={fileInput} onchange={handleFileUpload} />
 <div class="page-header">
   <div>
     <h1>Media Manager</h1>
     <p style="color: var(--pico-muted-color); margin: 0;">Manage your uploaded files.</p>
   </div>
-  <button type="button" style="border-radius: 99px; padding: 0.5rem 1.5rem; margin: 0;" on:click={() => fileInput.click()} disabled={isUploading}>{#if isUploading}<span aria-busy="true">{uploadProgress}%</span>{:else}+ Upload{/if}</button>
+  <button type="button" style="border-radius: 99px; padding: 0.5rem 1.5rem; margin: 0;" onclick={() => fileInput.click()} disabled={isUploading}>{#if isUploading}<span aria-busy="true">{uploadProgress}%</span>{:else}+ Upload{/if}</button>
 </div>
 
 <nav style="margin-bottom: 2rem;">
   <ul>
     <li>
       <!-- svelte-ignore a11y-invalid-attribute -->
-      <a href="#" class={kind === 'posts' ? 'secondary' : 'contrast'} on:click|preventDefault={() => handleTabChange('posts')}>Posts</a>
+      <a href="#" class={kind === 'posts' ? 'secondary' : 'contrast'} onclick={(e) => { e.preventDefault(); handleTabChange('posts'); }}>Posts</a>
     </li>
     <li>
       <!-- svelte-ignore a11y-invalid-attribute -->
-      <a href="#" class={kind === 'stories' ? 'secondary' : 'contrast'} on:click|preventDefault={() => handleTabChange('stories')}>Stories</a>
+      <a href="#" class={kind === 'stories' ? 'secondary' : 'contrast'} onclick={(e) => { e.preventDefault(); handleTabChange('stories'); }}>Stories</a>
     </li>
   </ul>
 </nav>
@@ -110,8 +110,8 @@
         <footer>
           <div class="filename" title={path}>{path.split('/').pop()}</div>
           <div class="actions">
-            <button class="secondary outline" on:click={() => copyPath(path)}>Copy Path</button>
-            <button class="secondary outline del-btn" on:click={() => deleteMedia(path)}>Delete</button>
+            <button class="secondary outline" onclick={() => copyPath(path)}>Copy Path</button>
+            <button class="secondary outline del-btn" onclick={() => deleteMedia(path)}>Delete</button>
           </div>
         </footer>
       </article>

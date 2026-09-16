@@ -112,7 +112,7 @@
     <h1>Stories</h1>
     <p style="color: var(--pico-muted-color); margin: 0;">Manage ephemeral content.</p>
   </div>
-  <button style="border-radius: 99px; padding: 0.5rem 1.5rem; margin: 0;" on:click={() => openDialog()}>+ New Story</button>
+  <button style="border-radius: 99px; padding: 0.5rem 1.5rem; margin: 0;" onclick={() => openDialog()}>+ New Story</button>
 </div>
 
 {#if isLoading}
@@ -138,8 +138,8 @@
           </div>
         </div>
         <footer>
-          <button class="secondary outline" style="border-radius: 99px; margin: 0; padding: 0.35rem 1rem; font-size: 0.85rem;" on:click={() => openDialog(story)}>Edit</button>
-          <button class="secondary outline" style="border-radius: 99px; margin: 0; padding: 0.35rem 1rem; font-size: 0.85rem; color: var(--pico-del-color); border-color: var(--pico-del-color);" on:click={() => deleteStory(story)}>Delete</button>
+          <button class="secondary outline" style="border-radius: 99px; margin: 0; padding: 0.35rem 1rem; font-size: 0.85rem;" onclick={() => openDialog(story)}>Edit</button>
+          <button class="secondary outline" style="border-radius: 99px; margin: 0; padding: 0.35rem 1rem; font-size: 0.85rem; color: var(--pico-del-color); border-color: var(--pico-del-color);" onclick={() => deleteStory(story)}>Delete</button>
         </footer>
       </article>
     {/each}
@@ -152,7 +152,7 @@
       <header>
         <h3 style="margin: 0;">{editingStory ? 'Edit Story' : 'Create New Story'}</h3>
       </header>
-      <form on:submit|preventDefault={saveStory} style="margin: 1rem 0 0 0;">
+      <form onsubmit={(e) => { e.preventDefault(); saveStory(e); }} style="margin: 1rem 0 0 0;">
         <MediaSelector bind:mediaPaths={formMediaPaths} {api} {displayBanner} kind="stories" />
         
         <label>
@@ -172,7 +172,7 @@
         </div>
         
         <footer style="margin-top: 1rem; padding-bottom: 0;">
-          <button type="button" class="secondary" style="border-radius: 99px;" on:click={closeDialog} disabled={isSubmitting}>Cancel</button>
+          <button type="button" class="secondary" style="border-radius: 99px;" onclick={closeDialog} disabled={isSubmitting}>Cancel</button>
           <button type="submit" style="border-radius: 99px;" disabled={isSubmitting}>
             {isSubmitting ? 'Saving...' : (editingStory ? 'Save Story' : 'Create Story')}
           </button>

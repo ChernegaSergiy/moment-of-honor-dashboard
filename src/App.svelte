@@ -71,7 +71,7 @@
       <h2 style="margin-bottom: 0.5rem; color: var(--primary);">Welcome Back</h2>
       <p style="color: var(--pico-muted-color); margin-bottom: 2rem;">Sign in to manage your CMS content.</p>
       
-      <button on:click={() => redirectToSignIn(api.baseUrl)} style="width: 100%; border-radius: 99px; background-color: #24292e; border-color: #24292e;">
+      <button onclick={() => redirectToSignIn(api.baseUrl)} style="width: 100%; border-radius: 99px; background-color: #24292e; border-color: #24292e;">
         Sign in with GitHub
       </button>
       
@@ -92,9 +92,9 @@
       
       <nav>
         <ul>
-          <li><a href="#" class:active={activeTab === 'posts'} on:click|preventDefault={() => activeTab = 'posts'}>Posts</a></li>
-          <li><a href="#" class:active={activeTab === 'stories'} on:click|preventDefault={() => activeTab = 'stories'}>Stories</a></li>
-          <li><a href="#" class:active={activeTab === 'media'} on:click|preventDefault={() => activeTab = 'media'}>Media</a></li>
+          <li><a href="#" class:active={activeTab === 'posts'} onclick={(e) => { e.preventDefault(); activeTab = 'posts'; }}>Posts</a></li>
+          <li><a href="#" class:active={activeTab === 'stories'} onclick={(e) => { e.preventDefault(); activeTab = 'stories'; }}>Stories</a></li>
+          <li><a href="#" class:active={activeTab === 'media'} onclick={(e) => { e.preventDefault(); activeTab = 'media'; }}>Media</a></li>
         </ul>
       </nav>
     </aside>
@@ -103,7 +103,7 @@
       <div class="topbar">
         <div style="display: flex; align-items: center; gap: 1rem;">
           <span class="badge active">{authStatusText}</span>
-          <button class="secondary outline" style="margin: 0; padding: 0.35rem 1rem; border-radius: 99px; font-size: 0.85rem;" on:click={doSignOut}>Sign out</button>
+          <button class="secondary outline" style="margin: 0; padding: 0.35rem 1rem; border-radius: 99px; font-size: 0.85rem;" onclick={doSignOut}>Sign out</button>
         </div>
       </div>
       

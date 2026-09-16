@@ -51,7 +51,7 @@
 
   let isUploading = $state(false);
   let uploadProgress = $state(0);
-  let fileInput;
+  let fileInput = $state();
 
   async function handleFileUpload(event) {
     const file = event.target.files[0];
@@ -86,20 +86,20 @@
 <div>
   <label>Media (Drag to reorder)</label>
   {#if mediaPaths.length > 0}
-    <div class="media-grid" use:dndzone={{items: dndItems, flipDurationMs}} on:consider={handleDndConsider} on:finalize={handleDndFinalize}>
+    <div class="media-grid" use:dndzone={{items: dndItems, flipDurationMs}} onconsider={handleDndConsider} onfinalize={handleDndFinalize}>
       {#each dndItems as item (item.id)}
         <div>
           <div class="media-item">
             <img src="https://raw.githubusercontent.com/ChernegaSergiy/moment-of-honor-content/main/{item.id}" alt="media" draggable="false" />
           </div>
           <div class="media-controls">
-            <button type="button" class="secondary outline" style="color: var(--pico-del-color); border-color: var(--pico-del-color);" on:click={() => removeMediaByPath(item.id)}>Remove</button>
+            <button type="button" class="secondary outline" style="color: var(--pico-del-color); border-color: var(--pico-del-color);" onclick={() => removeMediaByPath(item.id)}>Remove</button>
           </div>
         </div>
       {/each}
     </div>
   {/if}
-  <button type="button" class="secondary" style="border-radius: 99px; margin-bottom: 1rem;" on:click={openMediaGallery}>Select Media from Library</button>
+  <button type="button" class="secondary" style="border-radius: 99px; margin-bottom: 1rem;" onclick={openMediaGallery}>Select Media from Library</button>
 </div>
 
 {#if showMediaGallery}
@@ -108,8 +108,8 @@
       <header style="display: flex; justify-content: space-between; align-items: center;">
         <h3 style="margin: 0;">Media Library</h3>
         <div>
-           <input type="file" accept="image/*,video/*" style="display: none" bind:this={fileInput} on:change={handleFileUpload} />
-           <button type="button" class="secondary" style="margin: 0; border-radius: 99px; padding: 0.35rem 1rem; width: 140px;" on:click={() => fileInput.click()} disabled={isUploading}>
+           <input type="file" accept="image/*,video/*" style="display: none" bind:this={fileInput} onchange={handleFileUpload} />
+           <button type="button" class="secondary" style="margin: 0; border-radius: 99px; padding: 0.35rem 1rem; width: 140px;" onclick={() => fileInput.click()} disabled={isUploading}>
              {#if isUploading}
                <span aria-busy="true">{uploadProgress}%</span>
              {:else}
@@ -126,10 +126,10 @@
       {:else}
         <div class="media-grid" style="grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));">
           {#each availableMedia as path}
-            <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions -->
+            <!-- svelte-ignore a11y_click_events_have_key_events a11y_no_static_element_interactions -->
             <div 
               class="media-item {mediaPaths.includes(path) ? 'selected' : ''}" 
-              on:click={() => toggleMediaSelection(path)}
+              onclick={() => toggleMediaSelection(path)}
               style="cursor: pointer;"
             >
               <img src="https://raw.githubusercontent.com/ChernegaSergiy/moment-of-honor-content/main/{path}" alt="gallery item" loading="lazy" />
@@ -142,7 +142,7 @@
       {/if}
 
       <footer style="margin-top: 1rem; padding-bottom: 0;">
-        <button type="button" style="border-radius: 99px; width: 100%;" on:click={() => showMediaGallery = false}>Done</button>
+        <button type="button" style="border-radius: 99px; width: 100%;" onclick={() => showMediaGallery = false}>Done</button>
       </footer>
     </article>
   </dialog>

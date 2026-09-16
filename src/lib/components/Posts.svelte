@@ -113,7 +113,7 @@
     <h1>Posts</h1>
     <p style="color: var(--pico-muted-color); margin: 0;">Manage your articles and announcements.</p>
   </div>
-  <button style="border-radius: 99px; padding: 0.5rem 1.5rem; margin: 0;" on:click={() => openDialog()}>+ New Post</button>
+  <button style="border-radius: 99px; padding: 0.5rem 1.5rem; margin: 0;" onclick={() => openDialog()}>+ New Post</button>
 </div>
 
 {#if isLoading}
@@ -136,8 +136,8 @@
           </div>
         </div>
         <footer>
-          <button class="secondary outline" style="border-radius: 99px; margin: 0; padding: 0.35rem 1rem; font-size: 0.85rem;" on:click={() => openDialog(post)}>Edit</button>
-          <button class="secondary outline" style="border-radius: 99px; margin: 0; padding: 0.35rem 1rem; font-size: 0.85rem; color: var(--pico-del-color); border-color: var(--pico-del-color);" on:click={() => deletePost(post)}>Delete</button>
+          <button class="secondary outline" style="border-radius: 99px; margin: 0; padding: 0.35rem 1rem; font-size: 0.85rem;" onclick={() => openDialog(post)}>Edit</button>
+          <button class="secondary outline" style="border-radius: 99px; margin: 0; padding: 0.35rem 1rem; font-size: 0.85rem; color: var(--pico-del-color); border-color: var(--pico-del-color);" onclick={() => deletePost(post)}>Delete</button>
         </footer>
       </article>
     {/each}
@@ -150,7 +150,7 @@
       <header>
         <h3 style="margin: 0;">{editingPost ? 'Edit Post' : 'Create New Post'}</h3>
       </header>
-      <form on:submit|preventDefault={savePost} style="margin: 1rem 0 0 0;">
+      <form onsubmit={(e) => { e.preventDefault(); savePost(e); }} style="margin: 1rem 0 0 0;">
         <label>
           Title
           <input type="text" bind:value={formTitle} required maxlength="200" />
@@ -175,7 +175,7 @@
         </div>
         
         <footer style="margin-top: 1rem; padding-bottom: 0;">
-          <button type="button" class="secondary" style="border-radius: 99px;" on:click={closeDialog} disabled={isSubmitting}>Cancel</button>
+          <button type="button" class="secondary" style="border-radius: 99px;" onclick={closeDialog} disabled={isSubmitting}>Cancel</button>
           <button type="submit" style="border-radius: 99px;" disabled={isSubmitting}>
             {isSubmitting ? 'Saving...' : (editingPost ? 'Save Post' : 'Create Post')}
           </button>
