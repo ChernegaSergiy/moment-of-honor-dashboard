@@ -126,10 +126,12 @@
       {:else}
         <div class="media-grid" style="grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));">
           {#each availableMedia as path}
-            <!-- svelte-ignore a11y_click_events_have_key_events a11y_no_static_element_interactions -->
             <div 
               class="media-item {mediaPaths.includes(path) ? 'selected' : ''}" 
+              role="button"
+              tabindex="0"
               onclick={() => toggleMediaSelection(path)}
+              onkeydown={(e) => e.key === 'Enter' && toggleMediaSelection(path)}
               style="cursor: pointer;"
             >
               <img src="https://raw.githubusercontent.com/ChernegaSergiy/moment-of-honor-content/main/{path}" alt="gallery item" loading="lazy" />
