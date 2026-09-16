@@ -7,13 +7,13 @@
   import Stories from './lib/components/Stories.svelte';
   import Media from './lib/components/Media.svelte';
 
-  let api = null;
-  let view = 'login'; // 'login', 'app'
-  let activeTab = 'posts'; // 'posts', 'stories', 'media'
-  let authStatusText = '';
-  let statusMessage = '';
-  let statusIsError = false;
-  let showBanner = false;
+  let api = $state(null);
+  let view = $state('login'); // 'login', 'app'
+  let activeTab = $state('posts'); // 'posts', 'stories', 'media'
+  let authStatusText = $state('');
+  let statusMessage = $state('');
+  let statusIsError = $state(false);
+  let showBanner = $state(false);
 
   function displayBanner(msg, isErr = false) {
     statusMessage = msg;

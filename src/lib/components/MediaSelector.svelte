@@ -1,17 +1,19 @@
 <script>
   import { dndzone } from 'svelte-dnd-action';
-  export let api;
-  export let kind; // 'posts' or 'stories'
-  export let mediaPaths = [];
-  export let displayBanner;
+  
+  let { api, displayBanner, kind, mediaPaths = $bindable([]) } = $props();
 
-  let showMediaGallery = false;
-  let isLoadingMedia = false;
-  let availableMedia = [];
+  let showMediaGallery = $state(false);
+  let isLoadingMedia = $state(false);
+  let availableMedia = $state([]);
 
   // dnd logic
-  let dndItems = [];
-  $: dndItems = mediaPaths.map(path => ({ id: path }));
+  let dndItems = $state([]);
+  
+  $effect(() => {
+    dndItems = mediaPaths.map(path => ({ id: path }));
+  });
+  
   const flipDurationMs = 200;
 
   function handleDndConsider(e) {
@@ -47,8 +49,8 @@
     mediaPaths = mediaPaths.filter((p) => p !== path);
   }
 
-  let isUploading = false;
-  let uploadProgress = 0;
+  let isUploading = $state(false);
+  let uploadProgress = $state(0);
   let fileInput;
 
   async function handleFileUpload(event) {

@@ -1,17 +1,16 @@
 <script>
   import { onMount } from 'svelte';
-  export let api;
-  export let displayBanner;
+  let { api, displayBanner } = $props();
 
-  let stories = [];
-  let isLoading = false;
-  let showDialog = false;
-  let editingStory = null;
-  let formId = '';
-  let formMediaPaths = [];
-  let formAuthor = '';
-  let formPublishedAt = '';
-  let formExpiresAt = '';
+  let stories = $state([]);
+  let isLoading = $state(false);
+  let showDialog = $state(false);
+  let editingStory = $state(null);
+  let formId = $state('');
+  let formMediaPaths = $state([]);
+  let formAuthor = $state('');
+  let formPublishedAt = $state('');
+  let formExpiresAt = $state('');
 
   async function loadStories() {
     isLoading = true;
@@ -27,7 +26,7 @@
   onMount(() => loadStories());
 
   let initialFormState = {};
-  let isSubmitting = false;
+  let isSubmitting = $state(false);
 
   function toLocalDatetimeString(dateObj) {
     const d = new Date(dateObj);

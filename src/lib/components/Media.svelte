@@ -1,14 +1,13 @@
 <script>
   import { onMount } from 'svelte';
-  export let api;
-  export let displayBanner;
+  let { api, displayBanner } = $props();
 
-  let kind = 'posts';
-  let availableMedia = [];
-  let isLoading = false;
+  let kind = $state('posts');
+  let availableMedia = $state([]);
+  let isLoading = $state(false);
   let fileInput;
-  let isUploading = false;
-  let uploadProgress = 0;
+  let isUploading = $state(false);
+  let uploadProgress = $state(0);
 
   async function loadMedia() {
     isLoading = true;
